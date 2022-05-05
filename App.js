@@ -1,11 +1,47 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import {NavigationContainer , useNavigationContainerRef} from '@react-navigation/native'
+import { useReduxDevToolsExtension } from '@react-navigation/devtools'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import CreateTodoScreen from './src/screens/CreateTodoScreen'
+import Todo from './src/screens/Todo'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const App = () => {
+  // const navigationRef = useNavigationContainerRef();
+  // useReduxDevToolsExtension(navigationRef)
+  const Tab = createBottomTabNavigator();
+
   return (
-    <View>
-      <Text>App</Text>
-    </View>
+    <NavigationContainer> 
+      <Tab.Navigator screenOptions={{
+        tabBarStyle : {
+          backgroundColor : '#fff9ea',
+          marginHorizontal : 10,
+          borderRadius : 15,
+          height : 70,
+          elevation : 10,
+          top : -15,
+          padding : 5
+        },
+        tabBarActiveTintColor : 'green',
+        tabBarInactiveTintColor : 'red',
+        tabBarAllowFontScaling : true ,
+      }}>
+        <Tab.Screen
+        name='CreateTodo'
+        component={CreateTodoScreen}
+        // options={{
+        //   tabBarIcon : ({focused , color , size})=> {
+        //     focused ? <MaterialIcons style={{color : 'green'}}/> 
+        //     : <MaterialIcons style={{color : 'red'}}/>
+        //   }
+        // }}
+        />
+        <Tab.Screen name='Todo' component={Todo}/>
+      </Tab.Navigator>
+    </NavigationContainer>
   )
 }
 
