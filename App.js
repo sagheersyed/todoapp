@@ -7,13 +7,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import CreateTodoScreen from './src/screens/CreateTodoScreen'
 import Todo from './src/screens/Todo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { Provider } from 'react-redux'
+import { store } from './src/redux/store'
 
 const App = () => {
   // const navigationRef = useNavigationContainerRef();
   // useReduxDevToolsExtension(navigationRef)
   const Tab = createBottomTabNavigator();
-
+  console.log(store.getState())
   return (
+    <Provider store={store}>
     <NavigationContainer> 
       <Tab.Navigator screenOptions={{
         tabBarStyle : {
@@ -42,6 +45,7 @@ const App = () => {
         <Tab.Screen name='Todo' component={Todo}/>
       </Tab.Navigator>
     </NavigationContainer>
+    </Provider>
   )
 }
 
