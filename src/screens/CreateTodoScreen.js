@@ -2,13 +2,14 @@ import { StyleSheet, Text, View , Button, TextInput} from 'react-native'
 import React from 'react'
 import { useDispatch , useSelector } from 'react-redux'
 import { addTodo } from '../redux/action/action'
+import { firebase } from '@react-native-firebase/auth'
 // import { create } from 'react-test-renderer'
 
 const CreateTodoScreen = ({navigation}) => {
-  console.log("######## use selector state ########")
-  const state = useSelector(state => state.todo)
-  console.log(state)
-  console.log("######## use selector state ########")
+  console.log("######## use selector state ########");
+  const state = useSelector(state => state.todo);
+  console.log(state);
+  console.log("######## use selector state ########");
 
   const dispatch = useDispatch();
   const [createTodo , setTodo] = React.useState({
@@ -16,7 +17,15 @@ const CreateTodoScreen = ({navigation}) => {
     description : 'description'
   });
   const todo = ()=> {
-    dispatch(addTodo({ title : createTodo.title , description : createTodo.description } ))
+    const {title , description} = createTodo;
+    firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).collection('todo').add({
+      title , description
+    }).then((result)=> {
+      console.log(result)
+    }).catch((e)=> {
+      console.log(e)
+    });
+    dispatch(addTodo({ title , description } ))
   }
   // console.log(state)
   return (
@@ -32,6 +41,7 @@ const CreateTodoScreen = ({navigation}) => {
       </View>
       <Button title="todo" onPress={()=> navigation.jumpTo('Todo')}/>
       <Button title='Add Todo' onPress={()=> todo() } color="blue" />
+      <Button title='Sign Out' onPress={()=> firebase.auth().signOut()}/>
     </View>
   )
 }

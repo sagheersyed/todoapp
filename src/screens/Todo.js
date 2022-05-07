@@ -27,8 +27,8 @@ const Todo = () => {
          borderRadius : 15,
          width : 320
       }}>
-        <Text>{item.title}</Text>
-        <Text>{item.description}</Text>
+        <Text style={{color : 'white' , fontSize : 25 , fontWeight : 'bold'}}>{item.title}</Text>
+        <Text style={{color : 'white' , fontSize : 20}}>{item.description}</Text>
        </View>
       )}
       />

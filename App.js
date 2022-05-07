@@ -9,12 +9,32 @@ import Todo from './src/screens/Todo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Provider } from 'react-redux'
 import { store } from './src/redux/store'
+import auth from '@react-native-firebase/auth'
+import Register from './src/screens/authentication/Register'
 
 const App = () => {
   // const navigationRef = useNavigationContainerRef();
   // useReduxDevToolsExtension(navigationRef)
   const Tab = createBottomTabNavigator();
-  console.log(store.getState())
+  // console.log(store.getState())
+  const [initializing , setInitializing] = React.useState(true);
+  const [user , setUser] = React.useState();
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+  React.useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+  if (initializing) return null;
+
+  if (!user) {
+    return (
+      <Register/>
+    );
+  }
+
   return (
     <Provider store={store}>
     <NavigationContainer> 
